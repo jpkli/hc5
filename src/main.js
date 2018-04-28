@@ -3,7 +3,7 @@ import textLabel  from './text';
 import rect   from './rect';
 import legend from './legend';
 
-export default function hc4v(spec) {
+export default function hc5v(spec) {
     let layers = spec.layers;
     let rings = new Array(layers.length);
 
