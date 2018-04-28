@@ -1,4 +1,3 @@
-import colorSchemes from './colors';
 import getStats from './stats';
 
 export default function scatter(arg) {
@@ -46,14 +45,8 @@ export default function scatter(arg) {
     if(vmap.color && typeof(colors) != 'function') {
         if(stats[vmap.color].max == stats[vmap.color].min) stats[vmap.color].max+=1e-6;
 
-        if(typeof colors == 'string') {
-            getColor = function(d) {
-                var pos = d3.scale.linear()
-                    .domain([stats[vmap.color].min, stats[vmap.color].max])
-                    .range([0, colorSchemes(colors).colors.length-1])(d);
-
-                return colorSchemes(colors).colors[Math.floor(pos)];
-            }
+        if(typeof colors == 'function') {
+            getColor = colors;
         } else {
             getColor =  d3.scale.linear()
                 .domain([stats[vmap.color].min, stats[vmap.color].max])

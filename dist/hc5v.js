@@ -118,7 +118,7 @@ var root = typeof self == 'object' && self.self === self && self ||
            typeof global == 'object' && global.global === global && global ||
            undefined;
 
-root.h4cv = _src_main__WEBPACK_IMPORTED_MODULE_0__["default"];
+root.h5cv = _src_main__WEBPACK_IMPORTED_MODULE_0__["default"];
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../.nvm/versions/node/v8.11.1/lib/node_modules/webpack/buildin/global.js */ "../../../.nvm/versions/node/v8.11.1/lib/node_modules/webpack/buildin/global.js")))
 
 /***/ }),
@@ -355,7 +355,7 @@ function colorLegend(arg){
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return hc4v; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return hc5v; });
 /* harmony import */ var _chord__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chord */ "./src/chord.js");
 /* harmony import */ var _text__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./text */ "./src/text.js");
 /* harmony import */ var _rect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rect */ "./src/rect.js");
@@ -365,7 +365,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function hc4v(spec) {
+function hc5v(spec) {
     let layers = spec.layers;
     let rings = new Array(layers.length);
 
@@ -672,4 +672,4 @@ function Text(arg) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=hc4v.js.map
+//# sourceMappingURL=hc5v.js.map
