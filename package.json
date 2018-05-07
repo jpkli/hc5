@@ -1,7 +1,7 @@
 {
-  "name": "hc4v",
+  "name": "hc5",
   "version": "0.1.0",
-  "description": "Hierarchical Concentric Circular Visualizations",
+  "description": "Hierarchical Concentric Circles",
   "main": "index.js",
   "scripts": {
     "build": "npx webpack --config webpack.config.js",
