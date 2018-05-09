@@ -4,8 +4,8 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
     mode: "development",
     entry: {
-        "hc5v": "./index.js",
-        "hc5v.min": "./index.js"
+        "hc5": "./index.js",
+        "hc5.min": "./index.js"
     },
     devtool: "source-map",
     target: 'web',

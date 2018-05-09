@@ -71,7 +71,28 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "../../../.nvm/versions/node/v8.11.1/lib/node_modules/webpack/buildin/global.js":
+/***/ "./index.js":
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _src_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/main */ "./src/main.js");
+
+
+var root = typeof self == 'object' && self.self === self && self ||
+           typeof global == 'object' && global.global === global && global ||
+           undefined;
+
+root.h5c = _src_main__WEBPACK_IMPORTED_MODULE_0__["default"];
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -99,27 +120,6 @@ try {
 
 module.exports = g;
 
-
-/***/ }),
-
-/***/ "./index.js":
-/*!******************!*\
-  !*** ./index.js ***!
-  \******************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _src_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/main */ "./src/main.js");
-
-
-var root = typeof self == 'object' && self.self === self && self ||
-           typeof global == 'object' && global.global === global && global ||
-           undefined;
-
-root.h5cv = _src_main__WEBPACK_IMPORTED_MODULE_0__["default"];
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../.nvm/versions/node/v8.11.1/lib/node_modules/webpack/buildin/global.js */ "../../../.nvm/versions/node/v8.11.1/lib/node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -355,7 +355,7 @@ function colorLegend(arg){
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return hc5v; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return hc5; });
 /* harmony import */ var _chord__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chord */ "./src/chord.js");
 /* harmony import */ var _text__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./text */ "./src/text.js");
 /* harmony import */ var _rect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rect */ "./src/rect.js");
@@ -365,7 +365,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function hc5v(spec) {
+function hc5(spec) {
     let layers = spec.layers;
     let rings = new Array(layers.length);
 
@@ -672,4 +672,4 @@ function Text(arg) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=hc5v.js.map
+//# sourceMappingURL=hc5.js.map
