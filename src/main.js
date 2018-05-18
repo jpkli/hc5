@@ -1,7 +1,7 @@
 import chord  from './chord';
 import textLabel  from './text';
 import rect   from './rect';
-import legend from './legend';
+import colorlegend from './colorlegend';
 
 export default function hc5(spec) {
     let layers = spec.layers;
@@ -68,7 +68,7 @@ export default function hc5(spec) {
         if(layer.type !== 'text' && layer.vmap) {
             if(layer.legend) {
                 if(rings[li].colorDomain) colorDomain = rings[li].colorDomain;
-                legend({
+                colorLegend({
                     container: container,
                     colors: layer.colors,
                     height: Math.min(50, outerRadius/2 / layerlayer.length) ,

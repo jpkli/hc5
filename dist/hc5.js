@@ -44,11 +44,6 @@
 /******/ 		}
 /******/ 	};
 /******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -64,180 +59,16 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
-/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ "./index.js":
-/*!******************!*\
-  !*** ./index.js ***!
-  \******************/
-/*! no exports provided */
+/******/ ([
+/* 0 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _src_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/main */ "./src/main.js");
-
-
-var root = typeof self == 'object' && self.self === self && self ||
-           typeof global == 'object' && global.global === global && global ||
-           undefined;
-
-root.h5c = _src_main__WEBPACK_IMPORTED_MODULE_0__["default"];
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ "./src/chord.js":
-/*!**********************!*\
-  !*** ./src/chord.js ***!
-  \**********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Chord; });
-function Chord(arg) {
-    var options = arg || {},
-        container = options.container || "body",
-        data = options.data,
-        vmap = options.vmap,
-        width = options.width || 800,
-        height = options.height || width,
-        radius = options.radius || Math.min(width/2, height/2),
-        padding = options.padding || 0.1,
-        colorDomain = options.colorDomain || null,
-        colors = options.colors || ['steelblue', 'red'],
-        hover = options.hover || function(d) {};
-
-    if(!vmap.hasOwnProperty("size"))
-        vmap.size = 'count';
-
-    var matrix = data.map(function(rows){
-        return rows.map(function(row){
-            return row[vmap.size];
-        });
-    });
-
-    var chord = d3.layout.chord()
-        .padding( 0.1)
-        .sortSubgroups(d3.descending)
-        .matrix(matrix);
-
-    var colorValues = [];
-
-    data.forEach(function(rows){
-        rows.forEach(function(row){
-            colorValues = colorValues.concat(row[vmap.color]);
-        });
-    });
-
-    if(colorDomain === null) {
-        colorDomain = [Math.min.apply(null, colorValues), Math.max.apply(null, colorValues)];
-    }
-
-    var colorScale;
-
-    if(typeof colors == 'function') {
-        colorScale = colors;
-    } else {
-        colorScale = d3.scale.linear()
-            .domain([colorDomain[0], colorDomain[1]])
-            .range(colors);
-    }
-
-    var svg;
-    if(typeof container.append === 'function') {
-        svg = container;
-    } else {
-        var offset = Math.min((width / 2), (height / 2))
-        svg = d3.select(container).append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .append("g")
-                .attr("transform", "translate(" + offset + "," + offset + ")");
-    }
-
-    var core = svg.append("g")
-        .attr("class", "chord")
-        .selectAll("path")
-        .data(chord.chords)
-        .enter();
-
-    var ribbons = core.append("path").attr("class", "ribbons")
-        .attr("d", d3.svg.chord().radius(radius))
-        .style("fill", function(d){
-            var send = data[d.source.index][d.target.index][vmap.color];
-            var recv =  data[d.target.index][d.source.index][vmap.color];
-            return colorScale(Math.max(send, recv));
-        })
-        .style("stroke", "#FFF")
-        .style("opacity", 1);
-
-    chord.svg = svg;
-    chord.colorDomain = colorDomain;
-    chord.updateColor = function(colorDomain) {
-        chord.colorDomain = colorDomain;
-        colorScale.domain(colorDomain);
-        d3.selectAll('.ribbons').style("fill", function(d){
-            var send = data[d.source.index][d.target.index][vmap.color];
-            var recv =  data[d.target.index][d.source.index][vmap.color];
-            return colorScale(Math.max(send, recv));
-        })
-    }
-    return chord;
-}
-
-
-
-/***/ }),
-
-/***/ "./src/legend.js":
-/*!***********************!*\
-  !*** ./src/legend.js ***!
-  \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return colorLegend; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = colorLegend;
 var gradID = 0;
 function colorLegend(arg){
     var option = arg || {},
@@ -345,21 +176,65 @@ function colorLegend(arg){
 
 
 /***/ }),
-
-/***/ "./src/main.js":
-/*!*********************!*\
-  !*** ./src/main.js ***!
-  \*********************/
-/*! exports provided: default */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return hc5; });
-/* harmony import */ var _chord__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chord */ "./src/chord.js");
-/* harmony import */ var _text__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./text */ "./src/text.js");
-/* harmony import */ var _rect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rect */ "./src/rect.js");
-/* harmony import */ var _legend__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./legend */ "./src/legend.js");
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_main__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_colorlegend__ = __webpack_require__(0);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "colorLegend", function() { return __WEBPACK_IMPORTED_MODULE_1__src_colorlegend__["a"]; });
+
+
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__src_main__["a" /* default */]);
+
+
+var root = typeof self == 'object' && self.self === self && self ||
+           typeof global == 'object' && global.global === global && global ||
+           this;
+
+root.hc5 = __WEBPACK_IMPORTED_MODULE_0__src_main__["a" /* default */];
+
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = hc5;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__chord__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__text__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__rect__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__colorlegend__ = __webpack_require__(0);
 
 
 
@@ -396,7 +271,7 @@ function hc5(spec) {
             colorDomain = ['min', 'max'];
 
         if(layer.type == 'link') {
-            rings[li] = Object(_chord__WEBPACK_IMPORTED_MODULE_0__["default"])({
+            rings[li] = Object(__WEBPACK_IMPORTED_MODULE_0__chord__["a" /* default */])({
                 container: container,
                 data: layer.data,
                 width: width,
@@ -410,7 +285,7 @@ function hc5(spec) {
             container = rings[li];
         }
         else if(layer.type == 'bar') {
-            rings[li] = Object(_rect__WEBPACK_IMPORTED_MODULE_2__["default"])({
+            rings[li] = Object(__WEBPACK_IMPORTED_MODULE_2__rect__["a" /* default */])({
                 container: container,
                 data: layer.data,
                 innerRadius: cirOffset,
@@ -423,14 +298,14 @@ function hc5(spec) {
         } else if(layer.type == 'text') {
             layer.container = container;
             layer.radius = cirOffset;
-            rings[li] = Object(_text__WEBPACK_IMPORTED_MODULE_1__["default"])(s);
+            rings[li] = Object(__WEBPACK_IMPORTED_MODULE_1__text__["a" /* default */])(s);
             cirOffset = sectionRadius + cirPadding ;
         }
 
         if(layer.type !== 'text' && layer.vmap) {
             if(layer.legend) {
                 if(rings[li].colorDomain) colorDomain = rings[li].colorDomain;
-                Object(_legend__WEBPACK_IMPORTED_MODULE_3__["default"])({
+                colorLegend({
                     container: container,
                     colors: layer.colors,
                     height: Math.min(50, outerRadius/2 / layerlayer.length) ,
@@ -467,18 +342,160 @@ function hc5(spec) {
 
 
 /***/ }),
-
-/***/ "./src/rect.js":
-/*!*********************!*\
-  !*** ./src/rect.js ***!
-  \*********************/
-/*! exports provided: default */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return bars; });
-/* harmony import */ var _stats__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stats */ "./src/stats.js");
+/* harmony export (immutable) */ __webpack_exports__["a"] = Chord;
+function Chord(arg) {
+    var options = arg || {},
+        container = options.container || "body",
+        data = options.data,
+        vmap = options.vmap,
+        width = options.width || 800,
+        height = options.height || width,
+        radius = options.radius || Math.min(width/2, height/2),
+        padding = options.padding || 0.1,
+        colorDomain = options.colorDomain || null,
+        colors = options.colors || ['steelblue', 'red'],
+        hover = options.hover || function(d) {};
+
+    if(!vmap.hasOwnProperty("size"))
+        vmap.size = 'count';
+
+    var matrix = data.map(function(rows){
+        return rows.map(function(row){
+            return row[vmap.size];
+        });
+    });
+
+    var chord = d3.layout.chord()
+        .padding( 0.1)
+        .sortSubgroups(d3.descending)
+        .matrix(matrix);
+
+    var colorValues = [];
+
+    data.forEach(function(rows){
+        rows.forEach(function(row){
+            colorValues = colorValues.concat(row[vmap.color]);
+        });
+    });
+
+    if(colorDomain === null) {
+        colorDomain = [Math.min.apply(null, colorValues), Math.max.apply(null, colorValues)];
+    }
+
+    var colorScale;
+
+    if(typeof colors == 'function') {
+        colorScale = colors;
+    } else {
+        colorScale = d3.scale.linear()
+            .domain([colorDomain[0], colorDomain[1]])
+            .range(colors);
+    }
+
+    var svg;
+    if(typeof container.append === 'function') {
+        svg = container;
+    } else {
+        var offset = Math.min((width / 2), (height / 2))
+        svg = d3.select(container).append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+                .attr("transform", "translate(" + offset + "," + offset + ")");
+    }
+
+    var core = svg.append("g")
+        .attr("class", "chord")
+        .selectAll("path")
+        .data(chord.chords)
+        .enter();
+
+    var ribbons = core.append("path").attr("class", "ribbons")
+        .attr("d", d3.svg.chord().radius(radius))
+        .style("fill", function(d){
+            var send = data[d.source.index][d.target.index][vmap.color];
+            var recv =  data[d.target.index][d.source.index][vmap.color];
+            return colorScale(Math.max(send, recv));
+        })
+        .style("stroke", "#FFF")
+        .style("opacity", 1);
+
+    chord.svg = svg;
+    chord.colorDomain = colorDomain;
+    chord.updateColor = function(colorDomain) {
+        chord.colorDomain = colorDomain;
+        colorScale.domain(colorDomain);
+        d3.selectAll('.ribbons').style("fill", function(d){
+            var send = data[d.source.index][d.target.index][vmap.color];
+            var recv =  data[d.target.index][d.source.index][vmap.color];
+            return colorScale(Math.max(send, recv));
+        })
+    }
+    return chord;
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = Text;
+function Text(arg) {
+    var options = arg || {},
+        container = options.container || "body",
+        data = options.data,
+        prefix = options.prefix || '',
+        radius = options.radius || 200,
+        color = options.color || '#000000',
+        hover = options.hover || function(d) {};
+
+    var chords = container.groups();
+    // chords.forEach(function(chord, ci){
+    //
+    //     data[ci].startAngle = chord.startAngle
+    //     data[ci].endAngle = chord.endAngle;
+    //     data[ci].index = chord.index;
+    // })
+
+    function textTransofrm(d) {
+        var offset = (d.startAngle + (d.endAngle - d.startAngle)/2);
+        return (offset > Math.PI/2 && offset < 1.5*Math.PI) ? "rotate(270)" :"rotate(90)";
+    }
+
+    function textRotate(d) {
+        var offset = (d.startAngle + (d.endAngle - d.startAngle)/2);
+        return "rotate(" + ( offset * 180 / Math.PI - 90)
+            + ")translate(" + (radius+5) + ",0)";
+    }
+
+    var groupLabel = container.svg.append("g").selectAll("groupLabel")
+            .data(chords)
+            .enter().append("g")
+            .attr("transform", textRotate);
+
+    groupLabel.append("text")
+        .style("font-size", "0.9em")
+        .style("text-anchor", "middle")
+        .attr("dy", ".35em")
+        .attr("transform",  textTransofrm)
+        .text(function(d, i) { return  prefix + data[i]; });
+
+    return groupLabel;
+}
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = bars;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__stats__ = __webpack_require__(7);
 
 
 function bars(arg) {
@@ -519,7 +536,7 @@ function bars(arg) {
         getColor = (typeof colors === 'function') ? colors : function() { return colors[0]};
 
     if(stats === null) {
-        stats = Object(_stats__WEBPACK_IMPORTED_MODULE_0__["default"])(dataItems, Object.keys(vmap).map(function(k){ return vmap[k]; }));
+        stats = Object(__WEBPACK_IMPORTED_MODULE_0__stats__["a" /* default */])(dataItems, Object.keys(vmap).map(function(k){ return vmap[k]; }));
     }
 
     if(vmap.color && typeof(colors) != 'function') {
@@ -581,17 +598,11 @@ function bars(arg) {
 }
 
 /***/ }),
-
-/***/ "./src/stats.js":
-/*!**********************!*\
-  !*** ./src/stats.js ***!
-  \**********************/
-/*! exports provided: default */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return stats; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = stats;
 function stats(data, fields){
 
     if(!Array.isArray(data))
@@ -612,64 +623,6 @@ function stats(data, fields){
     return result;
 };
 
-/***/ }),
-
-/***/ "./src/text.js":
-/*!*********************!*\
-  !*** ./src/text.js ***!
-  \*********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Text; });
-function Text(arg) {
-    var options = arg || {},
-        container = options.container || "body",
-        data = options.data,
-        prefix = options.prefix || '',
-        radius = options.radius || 200,
-        color = options.color || '#000000',
-        hover = options.hover || function(d) {};
-
-    var chords = container.groups();
-    // chords.forEach(function(chord, ci){
-    //
-    //     data[ci].startAngle = chord.startAngle
-    //     data[ci].endAngle = chord.endAngle;
-    //     data[ci].index = chord.index;
-    // })
-
-    function textTransofrm(d) {
-        var offset = (d.startAngle + (d.endAngle - d.startAngle)/2);
-        return (offset > Math.PI/2 && offset < 1.5*Math.PI) ? "rotate(270)" :"rotate(90)";
-    }
-
-    function textRotate(d) {
-        var offset = (d.startAngle + (d.endAngle - d.startAngle)/2);
-        return "rotate(" + ( offset * 180 / Math.PI - 90)
-            + ")translate(" + (radius+5) + ",0)";
-    }
-
-    var groupLabel = container.svg.append("g").selectAll("groupLabel")
-            .data(chords)
-            .enter().append("g")
-            .attr("transform", textRotate);
-
-    groupLabel.append("text")
-        .style("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .attr("dy", ".35em")
-        .attr("transform",  textTransofrm)
-        .text(function(d, i) { return  prefix + data[i]; });
-
-    return groupLabel;
-}
-
-
-
 /***/ })
-
-/******/ });
+/******/ ]);
 //# sourceMappingURL=hc5.js.map

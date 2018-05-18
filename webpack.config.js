@@ -2,7 +2,6 @@ const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-    mode: "development",
     entry: {
         "hc5": "./index.js",
         "hc5.min": "./index.js"

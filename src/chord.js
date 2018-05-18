@@ -88,4 +88,3 @@ export default function Chord(arg) {
     }
     return chord;
 }
-
