@@ -1,4 +1,6 @@
 import getStats from './stats';
+import * as colorScales from 'd3-scale-chromatic';
+import {scaleLinear} from 'd3-scale'; 
 
 export default function bars(arg) {
     var options = arg || {},
@@ -14,24 +16,23 @@ export default function bars(arg) {
         colorDomain = options.colorDomain || null,
         stats = options.stats || null,
         colors = options.colors || ['white', 'steelblue'],
-        hover = options.hover || function(d) {};
+        hover = options.hover || function(d) {},
+        groups = options.groups || [];
 
-    var chords = container.groups();
-    var dataItems = [];
-    chords.forEach(function(chord, ci){
-        var delta = (chord.endAngle - chord.startAngle ) / data[ci].length;
-        data[ci].forEach(function(d, di){
-            var start =  chord.startAngle + di*delta;
-            d.startAngle = start;
-            d.endAngle = start + delta;
-            d.index = chord.index;
-        })
-        dataItems = dataItems.concat(data[ci]);
-    })
 
-    var svg = container.svg;
+    var dataItems = data;
+    // groups.forEach(function(chord, ci){
+    //     var delta = (chord.endAngle - chord.startAngle ) / data[ci].length;
+    //     data[ci].forEach(function(d, di){
+    //         var start =  chord.startAngle + di*delta;
+    //         d.startAngle = start;
+    //         d.endAngle = start + delta;
+    //         d.index = chord.index;
+    //     })
+    //     dataItems = dataItems.concat(data[ci]);
+    // })
 
-    var bars = svg.append("g")
+    var bars = container.append("g")
         .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")");
 
     var getSize = function() { return outerRadius; },
@@ -50,6 +51,15 @@ export default function bars(arg) {
 
         if(typeof colors == 'function') {
             getColor = colors;
+        } else if(typeof colors == 'string') {
+            var getRange = d3.scale.linear().domain(colorDomain).range([0, 1]);
+            getColor = function(value) {
+                if(typeof colorScales['interpolate' + colors] == 'function') {
+                    return colorScales['interpolate' + colors](getRange(value));
+                } else {
+                    return '#000000';
+                }
+            }
         } else {
             getColor =  d3.scale.linear()
                 .domain(colorDomain)
@@ -70,7 +80,7 @@ export default function bars(arg) {
             (d);
     }
 
-    var ring = svg.append("g").selectAll(".bar")
+    var ring = container.append("g").selectAll(".bar")
 
         .data(dataItems)
         .enter()
@@ -88,7 +98,7 @@ export default function bars(arg) {
     // visualElement
     //     .style("stroke", '#fff')
     //     .style("stroke-width", 0.5);
-    bars.svg = svg;
+
     bars.colorDomain = colorDomain;
     bars.updateColor = function(colorDomain) {
         bars.colorDomain = colorDomain;

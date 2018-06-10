@@ -1,3 +1,5 @@
+import * as cs from 'd3-scale-chromatic';
+
 var gradID = 0;
 export default function colorLegend(arg){
     var option = arg || {},
@@ -13,12 +15,17 @@ export default function colorLegend(arg){
         format = option.format || d3.format(".2s");
 
     var gradientID = gradID++;
-
     width -= padding.left + padding.right;
     height -= padding.top + padding.bottom;
-
-    var legend = (container === null) ? new Svg({width: width, height: height, padding: padding}) : container.svg,
-        rect = legend.append("g");
+    
+    var legend;
+    if(container === null) {
+        legend = d3.select(document.createElementNS('http://www.w3.org/2000/svg', 'svg'));
+    } else {
+        legend = d3.select(container).append("svg");
+    } 
+    legend.attr("width", width).attr("height", height);
+    var rect = legend.append("g");
 
     if(container !== null){
         if(typeof container.append === 'function')
@@ -29,19 +36,6 @@ export default function colorLegend(arg){
             document.getElementById(container).appendChild(legend);
     }
 
-    function linearDomain(domain, n){
-        var step = (domain[1] - domain[0])/(n),
-            res = [];
-        for(var i = domain[0]; i<=domain[1]; i+=step) {
-            res.push(i);
-        }
-
-        res.push(domain[1]);
-        return res;
-    }
-
-    var colorScale = d3.scale.linear().domain(linearDomain([0, colors.length], colors.length)).range(colors);
-
     function linearGradient(colors) {
         var gradient = legend.append("defs")
             .append("linearGradient")
@@ -51,11 +45,22 @@ export default function colorLegend(arg){
                 .attr("y1", "0%")
                 .attr("y2", "0%");
 
-        colors.forEach(function(c, i){
-            gradient.append("stop")
-                .attr("offset", i / colors.length )
-                .attr("stop-color", c);
-        });
+        if(Array.isArray(colors)) {
+            colors.forEach(function(c, i){
+                gradient.append("stop")
+                    .attr("offset", i / colors.length )
+                    .attr("stop-color", c);
+            });
+        } else if(typeof colors == 'string' ) {
+            if(typeof cs['interpolate' + colors] == 'function') {
+                for(var i = 0; i < 128; i++) {
+                    gradient.append("stop")
+                    .attr("offset", i / 128 )
+                    .attr("stop-color", cs['interpolate' + colors](i/128));
+                }
+            }
+        }
+
         return gradient;
     }
 
@@ -88,7 +93,6 @@ export default function colorLegend(arg){
             .text(format(domain[1]));
     }
 
-
     if(option.title) {
         legend.append("g")
             .append("text")
@@ -101,4 +105,3 @@ export default function colorLegend(arg){
 
     return legend;
 }
-

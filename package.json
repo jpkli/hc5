@@ -1,6 +1,6 @@
 {
   "name": "hc5",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Hierarchical Concentric Circles",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,9 @@
   "devDependencies": {
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^3.6.0"
+  },
+  "dependencies": {
+    "d3-scale": "^2.0.0",
+    "d3-scale-chromatic": "^1.3.0"
   }
 }

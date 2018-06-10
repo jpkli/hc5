@@ -1,11 +1,11 @@
+import colorMap from './colors';
+
 export default function Chord(arg) {
     var options = arg || {},
         container = options.container || "body",
         data = options.data,
         vmap = options.vmap,
-        width = options.width || 800,
-        height = options.height || width,
-        radius = options.radius || Math.min(width/2, height/2),
+        radius = options.radius || 100,
         padding = options.padding || 0.1,
         colorDomain = options.colorDomain || null,
         colors = options.colors || ['steelblue', 'red'],
@@ -37,27 +37,9 @@ export default function Chord(arg) {
         colorDomain = [Math.min.apply(null, colorValues), Math.max.apply(null, colorValues)];
     }
 
-    var colorScale;
-
-    if(typeof colors == 'function') {
-        colorScale = colors;
-    } else {
-        colorScale = d3.scale.linear()
-            .domain([colorDomain[0], colorDomain[1]])
-            .range(colors);
-    }
-
-    var svg;
-    if(typeof container.append === 'function') {
-        svg = container;
-    } else {
-        var offset = Math.min((width / 2), (height / 2))
-        svg = d3.select(container).append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .append("g")
-                .attr("transform", "translate(" + offset + "," + offset + ")");
-    }
+    var getColor = colorMap(colors, colorDomain);
+    console.log(colors, colorDomain, getColor(1234));
+    var svg = container;
 
     var core = svg.append("g")
         .attr("class", "chord")
@@ -70,20 +52,20 @@ export default function Chord(arg) {
         .style("fill", function(d){
             var send = data[d.source.index][d.target.index][vmap.color];
             var recv =  data[d.target.index][d.source.index][vmap.color];
-            return colorScale(Math.max(send, recv));
+            return getColor(Math.max(send, recv));
         })
         .style("stroke", "#FFF")
         .style("opacity", 1);
 
-    chord.svg = svg;
+
     chord.colorDomain = colorDomain;
     chord.updateColor = function(colorDomain) {
         chord.colorDomain = colorDomain;
-        colorScale.domain(colorDomain);
+        getColor.domain(colorDomain);
         d3.selectAll('.ribbons').style("fill", function(d){
             var send = data[d.source.index][d.target.index][vmap.color];
             var recv =  data[d.target.index][d.source.index][vmap.color];
-            return colorScale(Math.max(send, recv));
+            return getColor(Math.max(send, recv));
         })
     }
     return chord;

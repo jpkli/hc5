@@ -8,10 +8,8 @@ export default function stats(data, fields){
     fields.forEach(function(f) {
         var a = data.map(function(d){return d[f]; });
         result[f] = {
-            min: array.min(a),
-            max: array.max(a),
-            avg: array.avg(a),
-            std: array.std(a)
+            min: Math.min.apply(null, a),
+            max: Math.max.apply(null, a)
         };
     });
 

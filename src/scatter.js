@@ -13,12 +13,12 @@ export default function scatter(arg) {
         domain = options.domain || null,
         stats = options.stats || null,
         colors = options.colors || ['white', 'steelblue'],
-        hover = options.hover || function(d) {};
+        hover = options.hover || function(d) {},
+        groups = options.groups || [];
 
 
-    var chords = container.groups();
     var dataItems = [];
-    chords.forEach(function(chord, ci){
+    groups.forEach(function(chord, ci){
         var delta = (chord.endAngle - chord.startAngle ) / data[ci].length;
         data[ci].forEach(function(d, di){
             var start =  chord.startAngle + di*delta;
@@ -29,7 +29,7 @@ export default function scatter(arg) {
         dataItems = dataItems.concat(data[ci]);
     })
 
-    var svg = container.svg;
+    var svg = container;
 
     var bars = svg.append("g")
         .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")");
